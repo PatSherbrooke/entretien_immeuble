@@ -37,6 +37,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   late TextEditingController _chambreController;
   late TextEditingController _descriptionController;
   late TextEditingController _doneByController;
+  late TextEditingController _executionNoteController;
 
   // Liste des immeubles
   List<ImmeubleModel> _immeubles = [];
@@ -71,6 +72,8 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         TextEditingController(text: widget.task?.description ?? '');
     _doneByController =
         TextEditingController(text: widget.task?.doneBy ?? '');
+    _executionNoteController =
+        TextEditingController(text: widget.task?.executionNote ?? '');
 
     _selectedImmeuble =
         widget.task?.immeuble.isNotEmpty == true
@@ -91,6 +94,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     _chambreController.dispose();
     _descriptionController.dispose();
     _doneByController.dispose();
+    _executionNoteController.dispose();
     super.dispose();
   }
 
@@ -357,7 +361,11 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
       done: _done,
       doneDate: _done ? (_doneDate ?? DateTime.now()) : null,
       doneBy: _doneByController.text.trim(),
+      executionNote: _executionNoteController.text.trim(),
       lastModifiedBy: currentUser?.id ?? '',
+      createdBy: _isEditing
+          ? (widget.task?.createdBy ?? '')
+          : (currentUser?.nomComplet ?? ''),
       photoUrl: photoUrl,
       photoLocalPath: _photoLocalPath ?? '',
       plannedDate: _plannedDate,
@@ -491,6 +499,10 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     if (oldTask.doneBy != newTask.doneBy) {
       changes.add(
           MapEntry('done_by', [oldTask.doneBy, newTask.doneBy]));
+    }
+    if (oldTask.executionNote != newTask.executionNote) {
+      changes.add(MapEntry(
+          'execution_note', [oldTask.executionNote, newTask.executionNote]));
     }
     if (oldTask.photoUrl != newTask.photoUrl) {
       changes.add(MapEntry('photo_url', [
@@ -831,6 +843,16 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                   controller: _doneByController,
                   labelText: 'Exécutant',
                   prefixIcon: const Icon(Icons.person),
+                ),
+
+                const SizedBox(height: 12),
+
+                // Note d'exécution
+                AppTextField(
+                  controller: _executionNoteController,
+                  labelText: 'Note d\'exécution',
+                  prefixIcon: const Icon(Icons.note),
+                  maxLines: 3,
                 ),
 
                 const SizedBox(height: 12),

@@ -516,16 +516,20 @@ class _ImmeubleManagementScreenState extends State<ImmeubleManagementScreen> {
           FilterChip(
             label: Text(
               _showArchived ? 'Tous' : 'Actifs',
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             selected: _showArchived,
             onSelected: (value) {
               setState(() => _showArchived = value);
               _loadImmeubles();
             },
-            backgroundColor: Colors.white24,
-            selectedColor: Colors.white38,
-            checkmarkColor: Colors.white,
+            backgroundColor: Colors.white70,
+            selectedColor: Colors.white,
+            checkmarkColor: AppTheme.primaryColor,
           ),
           const SizedBox(width: 8),
         ],
@@ -590,7 +594,9 @@ class _ImmeubleManagementScreenState extends State<ImmeubleManagementScreen> {
           immeuble.nom,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: immeuble.archived ? AppTheme.archiveColor : null,
+            color: immeuble.archived
+                ? AppTheme.archiveColor
+                : AppTheme.textPrimary,
             decoration:
                 immeuble.archived ? TextDecoration.lineThrough : null,
           ),
@@ -601,7 +607,10 @@ class _ImmeubleManagementScreenState extends State<ImmeubleManagementScreen> {
             if (immeuble.adresse.isNotEmpty)
               Text(
                 immeuble.adresse,
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppTheme.textSecondary,
+                ),
               ),
             if (immeuble.archived)
               const Text(
@@ -629,13 +638,16 @@ class _ImmeubleManagementScreenState extends State<ImmeubleManagementScreen> {
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(
+            PopupMenuItem(
               value: 'edit',
               child: Row(
                 children: [
-                  Icon(Icons.edit, color: AppTheme.primaryColor),
-                  SizedBox(width: 8),
-                  Text('Modifier'),
+                  const Icon(Icons.edit, color: AppTheme.primaryColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Modifier',
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                  ),
                 ],
               ),
             ),
@@ -650,17 +662,23 @@ class _ImmeubleManagementScreenState extends State<ImmeubleManagementScreen> {
                         : AppTheme.warningColor,
                   ),
                   const SizedBox(width: 8),
-                  Text(immeuble.archived ? 'Désarchiver' : 'Archiver'),
+                  Text(
+                    immeuble.archived ? 'Désarchiver' : 'Archiver',
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                  ),
                 ],
               ),
             ),
-            const PopupMenuItem(
+            PopupMenuItem(
               value: 'delete',
               child: Row(
                 children: [
-                  Icon(Icons.delete, color: AppTheme.errorColor),
-                  SizedBox(width: 8),
-                  Text('Supprimer'),
+                  const Icon(Icons.delete, color: AppTheme.errorColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Supprimer',
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                  ),
                 ],
               ),
             ),

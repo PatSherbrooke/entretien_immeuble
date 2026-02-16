@@ -7,6 +7,25 @@ faire :
 cd /d/dev/projets/entretien_immeuble/lib
 
 # Après chaque modification :
+git checkout main
+# git pull origin main - mettre à jour les fichiers locaux.==NON
+
+# Créer la branche version
+git checkout -b V_20260216
+
+# Ajouter les fichiers et committer
 git add .
-git commit -m "description du changement"
-git push
+git commit -m "V_20260216 : corrections task_form_screen + app_text_field"
+
+# Pousser sur GitHub
+git push origin V_202650216
+
+# --- Plus tard, quand tout est validé ---
+
+# Fusionner dans main
+git checkout main
+git merge V_20260216
+git push origin main
+
+Vue graphique des commits
+https://github.com/VOTRE-NOM/entretien_immeuble/network

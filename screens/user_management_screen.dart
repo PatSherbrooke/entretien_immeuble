@@ -116,16 +116,19 @@ class _UserManagementScreenState
             label: Text(
               _showArchived ? 'Tous' : 'Actifs',
               style: const TextStyle(
-                  color: Colors.white, fontSize: 12),
+                color: AppTheme.textPrimary,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             selected: _showArchived,
             onSelected: (value) {
               setState(() => _showArchived = value);
               _loadUsers();
             },
-            backgroundColor: Colors.white24,
-            selectedColor: Colors.white38,
-            checkmarkColor: Colors.white,
+            backgroundColor: Colors.white70,
+            selectedColor: Colors.white,
+            checkmarkColor: AppTheme.primaryColor,
           ),
           const SizedBox(width: 8),
         ],
@@ -201,8 +204,9 @@ class _UserManagementScreenState
               user.nomComplet,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color:
-                    user.archived ? AppTheme.archiveColor : null,
+                color: user.archived
+                    ? AppTheme.archiveColor
+                    : AppTheme.textPrimary,
                 decoration: user.archived
                     ? TextDecoration.lineThrough
                     : null,
@@ -230,7 +234,10 @@ class _UserManagementScreenState
             ),
           ],
         ),
-        subtitle: Text(user.identifiant),
+        subtitle: Text(
+          user.identifiant,
+          style: const TextStyle(color: AppTheme.textSecondary),
+        ),
         trailing: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'edit') {
@@ -245,14 +252,17 @@ class _UserManagementScreenState
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(
+            PopupMenuItem(
               value: 'edit',
               child: Row(
                 children: [
-                  Icon(Icons.edit,
+                  const Icon(Icons.edit,
                       color: AppTheme.primaryColor),
-                  SizedBox(width: 8),
-                  Text('Modifier'),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Modifier',
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                  ),
                 ],
               ),
             ),
@@ -269,9 +279,12 @@ class _UserManagementScreenState
                         : AppTheme.warningColor,
                   ),
                   const SizedBox(width: 8),
-                  Text(user.archived
-                      ? 'Désarchiver'
-                      : 'Archiver'),
+                  Text(
+                    user.archived
+                        ? 'Désarchiver'
+                        : 'Archiver',
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                  ),
                 ],
               ),
             ),

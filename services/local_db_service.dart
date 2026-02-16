@@ -26,8 +26,9 @@ class LocalDbService {
         join(await getDatabasesPath(), 'entretien_immeuble.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 3,
       onCreate: _createDB,
+      onUpgrade: _upgradeDB,
     );
   }
 
@@ -63,7 +64,9 @@ class LocalDbService {
         done INTEGER DEFAULT 0,
         done_date TEXT,
         done_by TEXT DEFAULT '',
+        execution_note TEXT DEFAULT '',
         last_modified_by TEXT DEFAULT '',
+        created_by TEXT DEFAULT '',
         photo_url TEXT DEFAULT '',
         photo_local_path TEXT DEFAULT '',
         archived INTEGER DEFAULT 0,
@@ -119,6 +122,20 @@ class LocalDbService {
       'created_at': DateTime.now().toIso8601String(),
       'updated_at': DateTime.now().toIso8601String(),
     });
+  }
+
+  // Migration de la base de données
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      try {
+        await db.execute('ALTER TABLE tasks ADD COLUMN created_by TEXT DEFAULT ""');
+      } catch (e) {}
+    }
+    if (oldVersion < 3) {
+      try {
+        await db.execute('ALTER TABLE tasks ADD COLUMN execution_note TEXT DEFAULT ""');
+      } catch (e) {}
+    }
   }
 
   // ============================================

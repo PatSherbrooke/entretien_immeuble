@@ -6,10 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/task_model.dart';
-import '../models/task_history_model.dart';
 import '../services/local_db_service.dart';
-import '../services/supabase_service.dart';
-import '../services/sync_service.dart';
 import '../utils/theme.dart';
 import 'task_form_screen.dart';
 import 'task_history_screen.dart';
@@ -134,6 +131,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
               DateFormat('dd/MM/yyyy à HH:mm').format(_task.createdAt),
               Icons.date_range,
             ),
+            if (_task.createdBy.isNotEmpty)
+              _buildInfoCard(
+                'Créée par',
+                _task.createdBy,
+                Icons.person_add,
+              ),
 
             if (_task.plannedDate != null)
               _buildInfoCard(
@@ -151,12 +154,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
               const SizedBox(height: 8),
               if (_task.doneDate != null)
                 _buildInfoCard(
-                  'Date d\'exécution',
+                  'Date de terminaison',
                   DateFormat('dd/MM/yyyy').format(_task.doneDate!),
                   Icons.event_available,
                 ),
               if (_task.doneBy.isNotEmpty)
                 _buildInfoCard('Exécutant', _task.doneBy, Icons.person),
+              if (_task.executionNote.isNotEmpty)
+                _buildInfoCard(
+                  'Note d\'exécution',
+                  _task.executionNote,
+                  Icons.note,
+                ),
             ],
 
             // Photo

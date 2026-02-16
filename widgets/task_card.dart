@@ -98,75 +98,154 @@ class TaskCard extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Description
-              Text(
-                task.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.textSecondary,
-                ),
+              // A faire: description (une ligne, "..." si débordement)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.task_alt,
+                    size: 18,
+                    color: AppTheme.primaryColor.withValues(alpha: 178),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'A faire: ${task.description}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 8),
 
-              // Date et exécutant
+              // Créée le: date à gauche, créateur justifié à droite
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Date de création
-                  Text(
-                    DateFormat('dd/MM/yyyy').format(task.createdAt),
-                    style: const TextStyle(
-                        fontSize: 12, color: AppTheme.textSecondary),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.schedule,
+                        size: 14,
+                        color: AppTheme.textSecondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Créée le: ',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(task.createdAt),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
-
-                  // Date planifiée
-                  if (task.plannedDate != null)
-                    Row(
-                      children: [
-                        const Icon(Icons.calendar_today,
-                            size: 12, color: AppTheme.warningColor),
-                        const SizedBox(width: 4),
-                        Text(
-                          DateFormat('dd/MM/yyyy').format(task.plannedDate!),
-                          style: const TextStyle(
-                              fontSize: 12, color: AppTheme.warningColor),
+                  if (task.createdBy.isNotEmpty)
+                    Expanded(
+                      child: Text(
+                        task.createdBy,
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textSecondary,
                         ),
-                      ],
-                    ),
-
-                  // Exécutant
-                  if (task.doneBy.isNotEmpty)
-                    Row(
-                      children: [
-                        const Icon(Icons.person,
-                            size: 12, color: AppTheme.secondaryColor),
-                        const SizedBox(width: 4),
-                        Text(
-                          task.doneBy,
-                          style: const TextStyle(
-                              fontSize: 12, color: AppTheme.secondaryColor),
-                        ),
-                      ],
+                      ),
                     ),
                 ],
               ),
 
-              // Date d'exécution si terminée
-              if (task.done && task.doneDate != null) ...[
+              // Planifiée le: date (si existe)
+              if (task.plannedDate != null) ...[
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.event_available,
-                        size: 12, color: AppTheme.successColor),
+                    Icon(
+                      Icons.calendar_today,
+                      size: 14,
+                      color: AppTheme.warningColor,
+                    ),
                     const SizedBox(width: 4),
                     Text(
-                      'Terminée le ${DateFormat('dd/MM/yyyy').format(task.doneDate!)}',
+                      'Planifiée le: ',
                       style: const TextStyle(
-                          fontSize: 12, color: AppTheme.successColor),
+                        fontSize: 12,
+                        color: AppTheme.warningColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
+                    Text(
+                      DateFormat('dd/MM/yyyy').format(task.plannedDate!),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.warningColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+
+              // Terminée le: date + exécutant (si existe)
+              if (task.done && task.doneDate != null) ...[
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle_outline,
+                            size: 14,
+                            color: AppTheme.successColor,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Terminée le: ',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.successColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            DateFormat('dd/MM/yyyy').format(task.doneDate!),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.successColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Exécutant aligné à droite, même couleur
+                    if (task.doneBy.isNotEmpty)
+                      Flexible(
+                        child: Text(
+                          task.doneBy,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.successColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],

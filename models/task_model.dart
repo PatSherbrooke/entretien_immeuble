@@ -15,7 +15,9 @@ class TaskModel {
   final bool done;
   final DateTime? doneDate;
   final String doneBy;
+  final String executionNote;
   final String lastModifiedBy;
+  final String createdBy;
   final String photoUrl;
   final String photoLocalPath;
   final bool archived;
@@ -35,7 +37,9 @@ class TaskModel {
     this.done = false,
     this.doneDate,
     this.doneBy = '',
+    this.executionNote = '',
     this.lastModifiedBy = '',
+    this.createdBy = '',
     this.photoUrl = '',
     this.photoLocalPath = '',
     this.archived = false,
@@ -66,7 +70,9 @@ class TaskModel {
           ? DateTime.tryParse(map['done_date'].toString())
           : null,
       doneBy: map['done_by'] ?? '',
+      executionNote: map['execution_note'] ?? '',
       lastModifiedBy: map['last_modified_by'] ?? '',
+      createdBy: map['created_by'] ?? '',
       photoUrl: map['photo_url'] ?? '',
       photoLocalPath: map['photo_local_path'] ?? '',
       archived: map['archived'] == true || map['archived'] == 1,
@@ -91,10 +97,12 @@ class TaskModel {
       'done': done,
       'done_date': doneDate?.toIso8601String(),
       'done_by': doneBy,
+      'execution_note': executionNote,
       'last_modified_by': lastModifiedBy,
+      'created_by': createdBy,
       'photo_url': photoUrl,
       'archived': archived,
-      'planned_date': plannedDate?.toIso8601String()?.split('T')[0],
+      'planned_date': plannedDate?.toIso8601String().split('T')[0],
       'deleted': deleted,
     };
 
@@ -120,11 +128,13 @@ class TaskModel {
       'done': done ? 1 : 0,
       'done_date': doneDate?.toIso8601String(),
       'done_by': doneBy,
+      'execution_note': executionNote,
       'last_modified_by': lastModifiedBy,
+      'created_by': createdBy,
       'photo_url': photoUrl,
       'photo_local_path': photoLocalPath,
       'archived': archived ? 1 : 0,
-      'planned_date': plannedDate?.toIso8601String()?.split('T')[0],
+      'planned_date': plannedDate?.toIso8601String().split('T')[0],
       'deleted': deleted ? 1 : 0,
       'sync_status': syncStatus,
     };
@@ -156,7 +166,9 @@ class TaskModel {
     bool? done,
     DateTime? doneDate,
     String? doneBy,
+    String? executionNote,
     String? lastModifiedBy,
+    String? createdBy,
     String? photoUrl,
     String? photoLocalPath,
     bool? archived,
@@ -176,7 +188,9 @@ class TaskModel {
       done: done ?? this.done,
       doneDate: doneDate ?? this.doneDate,
       doneBy: doneBy ?? this.doneBy,
+      executionNote: executionNote ?? this.executionNote,
       lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
+      createdBy: createdBy ?? this.createdBy,
       photoUrl: photoUrl ?? this.photoUrl,
       photoLocalPath: photoLocalPath ?? this.photoLocalPath,
       archived: archived ?? this.archived,

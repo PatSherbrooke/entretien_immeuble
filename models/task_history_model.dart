@@ -92,6 +92,8 @@ class TaskHistoryModel {
         return 'Date d\'exécution';
       case 'done_by':
         return 'Exécutant';
+      case 'execution_note':
+        return 'Note d\'exécution';
       case 'photo_url':
         return 'Photo';
       case 'archived':
